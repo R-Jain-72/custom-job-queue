@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python api.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python worker.py
+    depends_on:
+      - redis
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: streamlit run app.py --server.port 8501
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+      - redis
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:
