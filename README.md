@@ -251,73 +251,6 @@ Check Job Status:curl http://localhost:5000/jobs/status/123e4567-e89b-12d3-a456-
 
 
 
-Troubleshooting
-
-Docker Issues:
-
-Verify Docker Desktop is running.
-Check container status:docker ps
-
-
-Restart:docker-compose down && docker-compose up --build
-
-
-
-
-Redis Not Accessible:
-
-Verify: redis-cli -h localhost -p 6379 ping (or via Docker).
-Check Redis logs:docker logs redis
-
-
-
-
-API Not Responding:
-
-Ensure port 5000 is free.
-Check API logs:docker logs job_queue_system-api-1
-
-
-
-
-Worker Not Processing:
-
-Verify Redis connectivity.
-Check worker logs:docker logs job_queue_system-worker-1
-
-
-
-
-Streamlit Not Loading:
-
-Ensure port 8501 is free.
-Check Streamlit logs:docker logs job_queue_system-streamlit-1
-
-
-
-
-
-Advanced Usage
-
-Multiple Workers:
-Scale workers with Docker:docker-compose up --scale worker=2
-
-
-
-
-Clear Redis Data:
-Reset queue:docker exec -it redis redis-cli flushdb
-
-
-
-
-View All Logs:
-For Docker:docker-compose logs
-
-
-
-
-
 Notes
 
 Prioritization: High-priority jobs (score=1) process before low-priority (score=2).
@@ -326,7 +259,6 @@ Timestamps: Tracks job lifecycle stages.
 No Off-the-Shelf Queues: Uses Redis directly.
 Docker Benefits: Simplifies setup, ensures consistency across systems.
 
-For support, review logs or contact the developer.```
 
 ## Demo
 https://github.com/user-attachments/assets/90697c0e-fb4a-4e1b-9529-93f23876c70d
